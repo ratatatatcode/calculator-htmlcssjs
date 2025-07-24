@@ -1,0 +1,19 @@
+const { db } = require("@/config/firebaseConfig");
+const {
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  addDoc,
+  query,
+  where,
+} = require("firebase/firestore");
+
+const userRef = collection(db, "users");
+
+// getProfileById
+// getProfileByUsername
+// updateProfileById
+// deleteProfileById
