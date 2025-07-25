@@ -2,18 +2,69 @@ const { auth, db } = require("@/config/firebaseConfig");
 const {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  deleteUser,
+  signOut,
   sendPasswordResetEmail,
 } = require("firebase/auth");
-const {
-  collection,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} = require("firebase/firestore");
+const { collection, doc, setDoc } = require("firebase/firestore");
+const fs = require('fs');
+const path = require('path');
+const jwt = require('jsonwebtoken');
 
-// signInUser
-// createUser
-// resetPassword
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
+
+// Helper to get default profile picture as data URL
+function toDataUrl() {
+  try {
+    const filePath = path.join(__dirname, '../public/images/default.jpg');
+    const img = fs.readFileSync(filePath);
+    return 'data:image/png;base64,' + Buffer.from(img).toString('base64');
+  } catch (e) {
+    return null;
+  }
+}
+
+const AuthService = {
+  async signup(email, password, extraFields = {}) {
+    // extraFields: { username, birthdate, skillsWanted, skillsOffered }
+    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+    const userId = userCred.user.uid;
+    const userCollection = collection(db, 'users');
+    const userData = {
+      ...extraFields,
+      email,
+      createdAt: new Date().toISOString(),
+      role: "user",
+      profilePicture: toDataUrl(),
+    };
+    const userRef = doc(userCollection, userId);
+    await setDoc(userRef, userData);
+    return { userId };
+  },
+
+  async login(email, password) {
+    const userCred = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCred.user;
+    // Issue JWT
+    const idToken = jwt.sign({ id: user.uid, email: user.email }, JWT_SECRET, { expiresIn: '7d' });
+    // Optionally, you can fetch user profile to check if onboarding is completed
+    return {
+      status: 200,
+      success: true,
+      message: "Logged In Successfully.",
+      idToken,
+      isCompleted: true // or fetch from Firestore if needed
+    };
+  },
+
+  async logout() {
+    await signOut(auth);
+    return true;
+  },
+
+  async resetPasswordEmail(email) {
+    await sendPasswordResetEmail(auth, email);
+    return true;
+  }
+};
+
+module.exports = AuthService;
