@@ -21,3 +21,6 @@ serviceAccountKey.json
 .firebaserc
 
 # IDE/editor config
+
+# Postman
+Peerfect.postman_collection.json
