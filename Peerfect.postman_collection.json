@@ -10,9 +10,7 @@
       "name": "Signup",
       "request": {
         "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"username\": \"testuser\",\n  \"birthdate\": \"2000-01-01\",\n  \"skillsWanted\": [\"guitar\", \"coding\"],\n  \"skillsOffered\": [\"piano\", \"math\"],\n  \"email\": \"testuser@example.com\",\n  \"password\": \"yourpassword\"\n}"
@@ -30,9 +28,7 @@
       "name": "Login",
       "request": {
         "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"yourpassword\"\n}"
@@ -50,9 +46,7 @@
       "name": "Get My Profile",
       "request": {
         "method": "GET",
-        "header": [
-          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
-        ],
+        "header": [{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }],
         "url": {
           "raw": "http://localhost:3000/api/user/profile",
           "protocol": "http",
@@ -101,9 +95,7 @@
       "name": "Delete My Profile",
       "request": {
         "method": "DELETE",
-        "header": [
-          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
-        ],
+        "header": [{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }],
         "url": {
           "raw": "http://localhost:3000/api/user/profile",
           "protocol": "http",
@@ -120,4 +112,4 @@
       "value": ""
     }
   ]
-} 
+}

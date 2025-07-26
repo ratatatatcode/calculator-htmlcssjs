@@ -6,19 +6,22 @@ const {
   sendPasswordResetEmail,
 } = require("firebase/auth");
 const { collection, doc, setDoc } = require("firebase/firestore");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-const toDataUrl = require('../utils/imageHelpers');
+const toDataUrl = require("../utils/imageHelpers");
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
-
+const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
 class AuthService {
   async signup(email, password, extraFields = {}) {
-    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+    const userCred = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
     const userId = userCred.user.uid;
 
-    const userCollection = collection(db, 'users');
+    const userCollection = collection(db, "users");
     const userData = {
       ...extraFields,
       email,
@@ -36,15 +39,15 @@ class AuthService {
   async login(email, password) {
     const userCred = await signInWithEmailAndPassword(auth, email, password);
     const user = userCred.user;
-    // Issue JWT
-    const idToken = jwt.sign({ id: user.uid, email: user.email }, JWT_SECRET, { expiresIn: '7d' });
-    // Optionally, you can fetch user profile to check if onboarding is completed
+    const idToken = jwt.sign({ id: user.uid, email: user.email }, JWT_SECRET, {
+      expiresIn: "7d",
+    });
     return {
       status: 200,
       success: true,
       message: "Logged In Successfully.",
       idToken,
-      isCompleted: true // or fetch from Firestore if needed
+      isCompleted: true,
     };
   }
 

@@ -1,46 +1,48 @@
 const userService = require("@/services/userService");
 
 class UserController {
-  // Get current user's profile
   async getProfile(req, res) {
     try {
-      const userId = req.user?.id || req.userId; // depends on auth middleware
+      const userId = req.user?.id || req.userId;
       if (!userId) return res.status(401).json({ message: "Unauthorized" });
       const profile = await userService.getProfileById(userId);
-      if (!profile) return res.status(404).json({ message: "Profile not found" });
+      if (!profile)
+        return res.status(404).json({ message: "Profile not found" });
       res.json(profile);
     } catch (error) {
       res.status(500).json({ message: "Server error", error: error.message });
     }
   }
 
-  // Get profile by username
   async getProfileByUsername(req, res) {
     try {
       const { username } = req.params;
-      if (!username) return res.status(400).json({ message: "Username required" });
+      if (!username)
+        return res.status(400).json({ message: "Username required" });
       const profile = await userService.getProfileByUsername(username);
-      if (!profile) return res.status(404).json({ message: "Profile not found" });
+      if (!profile)
+        return res.status(404).json({ message: "Profile not found" });
       res.json(profile);
     } catch (error) {
       res.status(500).json({ message: "Server error", error: error.message });
     }
   }
 
-  // Update current user's profile
   async updateProfile(req, res) {
     try {
       const userId = req.user?.id || req.userId;
       if (!userId) return res.status(401).json({ message: "Unauthorized" });
       const updateData = req.body;
-      const updatedProfile = await userService.updateProfileById(userId, updateData);
+      const updatedProfile = await userService.updateProfileById(
+        userId,
+        updateData,
+      );
       res.json(updatedProfile);
     } catch (error) {
       res.status(500).json({ message: "Server error", error: error.message });
     }
   }
 
-  // Delete current user's profile
   async deleteProfile(req, res) {
     try {
       const userId = req.user?.id || req.userId;
