@@ -1,8 +1,10 @@
 const express = require("express");
-const router = express.Router();
+const AuthService = require("@/services/authService")	
 const AuthController = require("@/controllers/authController");
 
-const authController = new AuthController();
+const router = express.Router();
+const authService = new AuthService();
+const authController = new AuthController(authService);
 
 // Register a new user
 router.post('/signup', authController.signup.bind(authController));
