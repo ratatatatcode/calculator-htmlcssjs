@@ -9,8 +9,7 @@ const { collection, doc, setDoc } = require("firebase/firestore");
 const jwt = require("jsonwebtoken");
 
 const toDataUrl = require("../utils/imageHelpers");
-
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 class AuthService {
   async signup(email, password, extraFields = {}) {

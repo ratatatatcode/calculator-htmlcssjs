@@ -6,8 +6,8 @@ const router = express.Router();
 const authService = new AuthService();
 const authController = new AuthController(authService);
 
-router.post("/signup", authController.signup.bind(authController));
-router.post("/login", authController.login.bind(authController));
+router.post("/api/auth/signup", authController.signup.bind(authController));
+router.post("/api/auth/login", authController.login.bind(authController));
 router.post(
   "/reset-password",
   authController.resetPasswordEmail.bind(authController),
