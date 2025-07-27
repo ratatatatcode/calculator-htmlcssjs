@@ -1,11 +1,13 @@
-const userService = require("@/services/userService");
-
 class UserController {
+  constructor(userService) {
+    this.userService = userService;
+  }
+
   async getProfile(req, res) {
     try {
       const userId = req.user?.id || req.userId;
       if (!userId) return res.status(401).json({ message: "Unauthorized" });
-      const profile = await userService.getProfileById(userId);
+      const profile = await this.userService.getProfileById(userId);
       if (!profile)
         return res.status(404).json({ message: "Profile not found" });
       res.json(profile);
@@ -19,7 +21,7 @@ class UserController {
       const { username } = req.params;
       if (!username)
         return res.status(400).json({ message: "Username required" });
-      const profile = await userService.getProfileByUsername(username);
+      const profile = await this.userService.getProfileByUsername(username);
       if (!profile)
         return res.status(404).json({ message: "Profile not found" });
       res.json(profile);
@@ -33,7 +35,7 @@ class UserController {
       const userId = req.user?.id || req.userId;
       if (!userId) return res.status(401).json({ message: "Unauthorized" });
       const updateData = req.body;
-      const updatedProfile = await userService.updateProfileById(
+      const updatedProfile = await this.userService.updateProfileById(
         userId,
         updateData,
       );
@@ -47,7 +49,7 @@ class UserController {
     try {
       const userId = req.user?.id || req.userId;
       if (!userId) return res.status(401).json({ message: "Unauthorized" });
-      await userService.deleteProfileById(userId);
+      await this.userService.deleteProfileById(userId);
       res.json({ message: "Profile deleted successfully" });
     } catch (error) {
       res.status(500).json({ message: "Server error", error: error.message });
