@@ -14,7 +14,6 @@ class SemanticSimilarityService {
 
   /**
    * Load the Universal Sentence Encoder model
-   * Uses dynamic import to avoid native binding issues
    */
   async loadModel() {
     if (this.isModelLoaded) {
@@ -39,7 +38,7 @@ class SemanticSimilarityService {
   }
 
   /**
-   * Internal method to load the model
+   * Ito ay method to load the model
    */
   async _loadModelInternal() {
     try {
@@ -65,7 +64,7 @@ class SemanticSimilarityService {
   }
 
   /**
-   * Calculate semantic similarity between two skills using TensorFlow.js with caching
+   * Calculate semantic similarity between two skills using TensorFlow.js 
    * @param {string} skill1 - First skill
    * @param {string} skill2 - Second skill
    * @returns {number} - Similarity score between 0 and 1
@@ -154,7 +153,7 @@ class SemanticSimilarityService {
   }
 
   /**
-   * Calculate cosine similarity between two embeddings
+   * Calculate cosine similarity 
    * @param {tf.Tensor} embedding1 - First embedding
    * @param {tf.Tensor} embedding2 - Second embedding
    * @returns {tf.Tensor} - Cosine similarity score
@@ -287,7 +286,7 @@ class SemanticSimilarityService {
   }
 
   /**
-   * Check if skills belong to the same category
+   * Categiry checker
    * @param {string} skill1 - First skill
    * @param {string} skill2 - Second skill
    * @returns {boolean} - Whether skills are in the same category
@@ -304,7 +303,7 @@ class SemanticSimilarityService {
   }
 
   /**
-   * Check for partial matches (e.g., "JavaScript" vs "JS")
+   * Check for partial matches sa users
    * @param {string} skill1 - First skill
    * @param {string} skill2 - Second skill
    * @returns {boolean} - Whether skills have partial matches
@@ -350,7 +349,7 @@ class SemanticSimilarityService {
   }
 
   /**
-   * Check if skills are related (e.g., "Web Development" vs "JavaScript")
+   * Check if skills are related 
    * @param {string} skill1 - First skill
    * @param {string} skill2 - Second skill
    * @returns {boolean} - Whether skills are related
@@ -453,7 +452,7 @@ class SemanticSimilarityService {
   }
 
   /**
-   * Get embeddings with caching support
+   * Get embeddings 
    * @param {Array<string>} skills - Array of skills to get embeddings for
    * @returns {Promise<Array>} - Array of embeddings
    */
