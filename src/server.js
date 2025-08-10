@@ -4,6 +4,9 @@ const express = require("express");
 const path = require("path");
 const authRoutes = require("@/routes/authRoutes");
 const userRoutes = require("@/routes/userRoutes");
+const matchingRoutes = require("@/routes/matchingRoutes");
+
+require("@/utils/scheduler");
 
 const app = express();
 
@@ -15,6 +18,7 @@ app.set("view engine", "ejs");
 
 app.use("/", authRoutes);
 app.use("/", userRoutes);
+app.use("/api/matching", matchingRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

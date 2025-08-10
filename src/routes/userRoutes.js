@@ -3,7 +3,7 @@ const UserController = require("@/controllers/userController");
 
 const router = express.Router();
 const userController = new UserController();
-const authenticateJWT = require("@/middleware/auth");
+const { authenticateJWT } = require("@/middleware/auth");
 
 router.get(
   "/profile",
@@ -15,14 +15,24 @@ router.get(
   userController.getProfileByUsername.bind(userController),
 );
 router.put(
-  "/api/user/update/profile",
+  "/user/update/profile",
   authenticateJWT,
   userController.updateProfile.bind(userController),
 );
 router.delete(
-  "/api/user/delete/profile",
+  "/user/delete/profile",
   authenticateJWT,
   userController.deleteProfile.bind(userController),
+);
+
+router.patch(
+  "/users/:id/matching-status",
+  authenticateJWT,
+  userController.updateMatchingStatus.bind(userController),
+);
+router.get(
+  "/users/skills/:skill",
+  userController.getUsersBySkills.bind(userController),
 );
 
 module.exports = router;

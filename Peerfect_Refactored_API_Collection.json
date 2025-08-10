@@ -1,0 +1,778 @@
+{
+  "info": {
+    "_postman_id": "peerfect-refactored-api-collection",
+    "name": "Peerfect Refactored API Collection",
+    "description": "Updated Postman collection for the refactored class-based Peerfect API with semantic matching algorithm testing.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000", "type": "string" },
+    { "key": "auth_token", "value": "", "type": "string" },
+    { "key": "user1_id", "value": "", "type": "string" },
+    { "key": "user2_id", "value": "", "type": "string" },
+    { "key": "user3_id", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Signup User 1 (Teacher - Programming)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('user1_id', response.userId || response.uid || response.id);",
+                  "    console.log('User 1 ID saved:', response.userId || response.uid || response.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"teacher1@test.com\",\n  \"password\": \"password123\",\n  \"username\": \"teacher1\",\n  \"birthdate\": \"1990-01-01\",\n  \"skillsWanted\": [\"Cooking\", \"Photography\"],\n  \"skillsOffered\": [\"JavaScript\", \"Python\", \"Web Development\"],\n  \"isActivelyMatching\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/signup",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "signup"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Signup User 2 (Learner - Cooking)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('user2_id', response.userId || response.uid || response.id);",
+                  "    console.log('User 2 ID saved:', response.userId || response.uid || response.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"learner1@test.com\",\n  \"password\": \"password123\",\n  \"username\": \"learner1\",\n  \"birthdate\": \"1995-01-01\",\n  \"skillsWanted\": [\"JavaScript\", \"Web Development\"],\n  \"skillsOffered\": [\"Cooking\", \"Baking\"],\n  \"isActivelyMatching\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/signup",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "signup"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Signup User 3 (Teacher - Photography)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('user3_id', response.userId || response.uid || response.id);",
+                  "    console.log('User 3 ID saved:', response.userId || response.uid || response.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"teacher2@test.com\",\n  \"password\": \"password123\",\n  \"username\": \"teacher2\",\n  \"birthdate\": \"1988-01-01\",\n  \"skillsWanted\": [\"Cooking\", \"Baking\"],\n  \"skillsOffered\": [\"Photography\", \"Design\"],\n  \"isActivelyMatching\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/signup",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "signup"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login User 1",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.idToken || response.token) {",
+                  "        pm.environment.set('auth_token', response.idToken || response.token);",
+                  "        console.log('Token saved:', response.idToken || response.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"teacher1@test.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login User 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.idToken || response.token) {",
+                  "        pm.environment.set('auth_token_user2', response.idToken || response.token);",
+                  "        console.log('User 2 Token saved:', response.idToken || response.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"learner1@test.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login User 3",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.idToken || response.token) {",
+                  "        pm.environment.set('auth_token_user3', response.idToken || response.token);",
+                  "        console.log('User 3 Token saved:', response.idToken || response.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"teacher2@test.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/profile",
+              "host": ["{{base_url}}"],
+              "path": ["profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Profile by Username",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/teacher1",
+              "host": ["{{base_url}}"],
+              "path": ["teacher1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"updatedteacher1\",\n  \"skillsWanted\": [\"Cooking\", \"Photography\", \"Music\"],\n  \"skillsOffered\": [\"JavaScript\", \"Python\", \"Web Development\", \"React\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user/update/profile",
+              "host": ["{{base_url}}"],
+              "path": ["user", "update", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Matching Status - Enable",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActivelyMatching\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/{{user1_id}}/matching-status",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user1_id}}", "matching-status"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Matching Status - Disable",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActivelyMatching\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/{{user1_id}}/matching-status",
+              "host": ["{{base_url}}"],
+              "path": ["users", "{{user1_id}}", "matching-status"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Users by Skill",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/users/skills/JavaScript",
+              "host": ["{{base_url}}"],
+              "path": ["users", "skills", "JavaScript"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete My Profile",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/user/delete/profile",
+              "host": ["{{base_url}}"],
+              "path": ["user", "delete", "profile"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Semantic Similarity Testing",
+      "item": [
+        {
+          "name": "Test Skill Similarity - Guitar vs Ukulele",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill1\": \"Guitar\",\n  \"skill2\": \"Ukulele\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/matching/test-similarity",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matching", "test-similarity"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test Skill Similarity - JavaScript vs Python",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill1\": \"JavaScript\",\n  \"skill2\": \"Python\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/matching/test-similarity",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matching", "test-similarity"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Test Skill Similarity - Cooking vs Baking",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill1\": \"Cooking\",\n  \"skill2\": \"Baking\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/matching/test-similarity",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matching", "test-similarity"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Semantic Configuration",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/matching/semantic-config",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matching", "semantic-config"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Similarity Threshold",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"threshold\": 0.7\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/matching/similarity-threshold",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matching", "similarity-threshold"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Matching Algorithm Testing",
+      "item": [
+        {
+          "name": "1. Enable Matching for All Users",
+          "item": [
+            {
+              "name": "Enable User 1 Matching",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isActivelyMatching\": true\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/{{user1_id}}/matching-status",
+                  "host": ["{{base_url}}"],
+                  "path": ["users", "{{user1_id}}", "matching-status"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Enable User 2 Matching",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Authorization", "value": "Bearer {{auth_token_user2}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isActivelyMatching\": true\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/{{user2_id}}/matching-status",
+                  "host": ["{{base_url}}"],
+                  "path": ["users", "{{user2_id}}", "matching-status"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Enable User 3 Matching",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  { "key": "Content-Type", "value": "application/json" },
+                  { "key": "Authorization", "value": "Bearer {{auth_token_user3}}" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isActivelyMatching\": true\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/{{user3_id}}/matching-status",
+                  "host": ["{{base_url}}"],
+                  "path": ["users", "{{user3_id}}", "matching-status"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "2. Check Potential Partners",
+          "item": [
+            {
+              "name": "Get Potential Partners - User 1",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/matching/potential-partners/{{user1_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "matching", "potential-partners", "{{user1_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Potential Partners - User 2",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{auth_token_user2}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/matching/potential-partners/{{user2_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "matching", "potential-partners", "{{user2_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Potential Partners - User 3",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{auth_token_user3}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/matching/potential-partners/{{user3_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "matching", "potential-partners", "{{user3_id}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "3. Trigger Matching Process",
+          "item": [
+            {
+              "name": "Request Match - User 1",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "    console.log('User 1 matching completed');",
+                      "    const response = pm.response.json();",
+                      "    console.log('Matches found:', response.matches);",
+                      "    if (response.semanticAnalysis) {",
+                      "        console.log('Semantic analysis:', response.semanticAnalysis);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/matching/request-match/{{user1_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "matching", "request-match", "{{user1_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Request Match - User 2",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "    console.log('User 2 matching completed');",
+                      "    const response = pm.response.json();",
+                      "    console.log('Matches found:', response.matches);",
+                      "    if (response.semanticAnalysis) {",
+                      "        console.log('Semantic analysis:', response.semanticAnalysis);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{auth_token_user2}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/matching/request-match/{{user2_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "matching", "request-match", "{{user2_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Request Match - User 3",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "    console.log('User 3 matching completed');",
+                      "    const response = pm.response.json();",
+                      "    console.log('Matches found:', response.matches);",
+                      "    if (response.semanticAnalysis) {",
+                      "        console.log('Semantic analysis:', response.semanticAnalysis);",
+                  "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{auth_token_user3}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/matching/request-match/{{user3_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "matching", "request-match", "{{user3_id}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "4. Check Match Results",
+          "item": [
+            {
+              "name": "Get Matches - User 1",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "    const response = pm.response.json();",
+                      "    console.log('User 1 matches:', response.matches);",
+                      "    pm.test('User 1 has matches', function() {",
+                      "        pm.expect(response.matches).to.be.an('array');",
+                      "    });",
+                      "    if (response.semanticAnalysis) {",
+                      "        console.log('Semantic analysis:', response.semanticAnalysis);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/matching/matches/{{user1_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "matching", "matches", "{{user1_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Matches - User 2",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "    const response = pm.response.json();",
+                      "    console.log('User 2 matches:', response.matches);",
+                      "    pm.test('User 1 has matches', function() {",
+                      "        pm.expect(response.matches).to.be.an('array');",
+                      "    });",
+                      "    if (response.semanticAnalysis) {",
+                      "        console.log('Semantic analysis:', response.semanticAnalysis);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{auth_token_user2}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/matching/matches/{{user2_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "matching", "matches", "{{user2_id}}"]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Matches - User 3",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "if (pm.response.code === 200) {",
+                      "    const response = pm.response.json();",
+                      "    console.log('User 3 matches:', response.matches);",
+                      "    pm.test('User 1 has matches', function() {",
+                      "        pm.expect(response.matches).to.be.an('array');",
+                      "    });",
+                      "    if (response.semanticAnalysis) {",
+                      "        console.log('Semantic analysis:', response.semanticAnalysis);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{auth_token_user3}}" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/matching/matches/{{user3_id}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "matching", "matches", "{{user3_id}}"]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
