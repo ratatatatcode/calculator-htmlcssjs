@@ -13,10 +13,10 @@ class MatchingController {
 		const userId = req.userId;
 		try {
 			const result = await this.matchingService.findMatch(userId);
-			const { status, success, message, curUserSkillOffered, curUserSkillWanted, matches } = result;
+			const { status, success, message, runtime, skillsOffered, skillsWanted, matches } = result;
 			return res
 				.status(status)
-				.json({ success, message, curUserSkillOffered, curUserSkillWanted, matches });
+				.json({ status, success, message, runtime, userId, skillsOffered, skillsWanted, matches });
 		} catch(err) {
 			console.error(`ERROR MATCHING: ${err.code} - ${err.message}`);
 	        return res

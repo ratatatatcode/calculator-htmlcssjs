@@ -9,7 +9,6 @@ const {
   query,
   where,
 } = require("firebase/firestore");
-const { pipeline } = require('@huggingface/transformers');
 
 class MatchingService {
 	async getSkills(skillList) {
@@ -22,28 +21,6 @@ class MatchingService {
 		}
 
 		return skills
-	}
-
-
-	async calculateEmbeddings(skills) {
-		const vectors = []
-
-		const extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2', { pooling: "none", normalize: true });
-		const embeddings = await extractor(skills, { pooling: 'none', normalize: true });
-		
-	  const numSkills = skills.length;
-	  const embeddingSize = embeddings.data.length / numSkills;
-
-	  // Average the embeddings
-	  const avgVector = new Array(embeddingSize).fill(0);
-	  for (let i = 0; i < embeddings.data.length; i++) {
-	    avgVector[i % embeddingSize] += embeddings.data[i];
-	  }
-	  for (let i = 0; i < avgVector.length; i++) {
-	    avgVector[i] /= numSkills;
-	  }
-
-	  return avgVector;
 	}
 
 	cosineSimilarity(vector1, vector2) {
@@ -68,20 +45,19 @@ class MatchingService {
 	}
 
 	async findMatch(userId) {
+		const startTime = Date.now();
+
 		const userRef = collection(db, "users");
 		const curUserDoc = await getDoc(doc(userRef, userId));
 		if (!curUserDoc.exists()) return null;
 
 		const curUserData = curUserDoc.data();
 
-		const curUserSkillOfferedId = curUserData.skillsOffered;
-		const curUserSkillWantedId = curUserData.skillsWanted;
+		const curUserSkillOffered = await this.getSkills(curUserData.skillsOffered)
+		const curUserSkillWanted = await this.getSkills(curUserData.skillsWanted)
 
-		const curUserSkillOffered = await this.getSkills(curUserSkillOfferedId)
-		const curUserSkillWanted = await this.getSkills(curUserSkillWantedId)
-
-		const curUserOfferedVector = await this.calculateEmbeddings(curUserSkillOffered)
-		const curUserWantedVector = await this.calculateEmbeddings(curUserSkillWanted)
+		const curUserOfferedVector = curUserData.skillsOfferedVector
+		const curUserWantedVector = curUserData.skillsWantedVector
 
 		const matches = [];
 		const usersSnap = await getDocs(userRef);
@@ -96,8 +72,8 @@ class MatchingService {
 			const userSkillOffered = await this.getSkills(user.skillsOffered)
 			const userSkillWanted = await this.getSkills(user.skillsWanted)
 
-			const userOfferedVector = await this.calculateEmbeddings(userSkillOffered)
-			const userWantedVector = await this.calculateEmbeddings(userSkillWanted)
+			const userOfferedVector = user.skillsOfferedVector
+			const userWantedVector = user.skillsWantedVector
 
 			const score1 = this.cosineSimilarity(
 	      curUserOfferedVector,
@@ -114,19 +90,22 @@ class MatchingService {
 	    matches.push({
 	      id: user.id,
 	      score: compatibility,
-	      userSkillOffered,
-				userSkillWanted
+	      skillsOffered: userSkillOffered,
+				skillsWanted: userSkillWanted
 	    });
 		}
 
 		matches.sort((a, b) => b.score - a.score);
 
+		const runtime = Date.now() - startTime;
+
 		return {
 			status: 200,
 			success: true,
 			message: "Match Found!",
-			curUserSkillOffered,
-			curUserSkillWanted,
+			runtime: `${runtime} ms`,
+			skillsOffered: curUserSkillOffered,
+			skillsWanted: curUserSkillWanted,
 			matches
 		};
 	}
