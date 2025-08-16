@@ -9,9 +9,9 @@ class AuthController {
       password,
       username,
       birthdate,
-      skillsWanted,
-      skillsOffered,
     } = req.body;
+    const skillsWanted = req.body.skillsWanted.split(",").map(s => s.trim());
+    const skillsOffered = req.body.skillsOffered.split(",").map(s => s.trim());
     try {
       const { userId } = await this.authService.signup(email, password, {
         username,

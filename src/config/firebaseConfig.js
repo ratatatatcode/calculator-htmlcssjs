@@ -1,4 +1,3 @@
-require("dotenv").config();
 const { initializeApp } = require("firebase/app");
 const { getAuth } = require("firebase/auth");
 const { getFirestore } = require("firebase/firestore");

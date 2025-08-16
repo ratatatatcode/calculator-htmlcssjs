@@ -8,10 +8,14 @@ const {
 const { collection, doc, setDoc } = require("firebase/firestore");
 const jwt = require("jsonwebtoken");
 
-const toDataUrl = require("../utils/imageHelpers");
+const AuthUtils = require("../utils/authUtils");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 class AuthService {
+  constructor() {
+    this.authUtils = new AuthUtils();
+  }
+
   async signup(email, password, extraFields = {}) {
     const userCred = await createUserWithEmailAndPassword(
       auth,
@@ -20,13 +24,18 @@ class AuthService {
     );
     const userId = userCred.user.uid;
 
+    const skillsOfferedVector = await this.authUtils.calculateEmbeddings(extraFields.skillsOffered)
+    const skillsWantedVector = await this.authUtils.calculateEmbeddings(extraFields.skillsWanted)
+
     const userCollection = collection(db, "users");
     const userData = {
       ...extraFields,
+      skillsOfferedVector,
+      skillsWantedVector,
       email,
       createdAt: new Date().toISOString(),
       role: "user",
-      profilePicture: toDataUrl(),
+      profilePicture: this.authUtils.toDataUrl(),
     };
 
     const userRef = doc(userCollection, userId);
