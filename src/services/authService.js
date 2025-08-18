@@ -36,6 +36,7 @@ class AuthService {
       createdAt: new Date().toISOString(),
       role: "user",
       profilePicture: this.authUtils.toDataUrl(),
+      isActivelyMatching: true, 
     };
 
     const userRef = doc(userCollection, userId);

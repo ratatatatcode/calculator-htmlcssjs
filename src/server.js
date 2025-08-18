@@ -6,6 +6,7 @@ const authRoutes = require("@/routes/authRoutes");
 const userRoutes = require("@/routes/userRoutes");
 const herseyMatchingRoutes = require("@/routes/hersey/matchingRoutes");
 const herseySkillRoutes = require("@/routes/hersey/skillRoutes");
+const jaronMatchingRoutes = require("@/routes/jaron/matchingRoutes");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use("/", authRoutes);
 app.use("/", userRoutes);
 app.use("/hersey/", herseyMatchingRoutes);
 app.use("/hersey/", herseySkillRoutes);
+app.use("/jaron/", jaronMatchingRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
