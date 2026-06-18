@@ -5,3 +5,5 @@ Another small project to practice JavaScript fundamentals like DOM manipulation,
 
 Disclaimer:<br>
 The core calculator functionality is working, but some features are still unfinished, such as +/- toggling, operator replacement, deleting the last input, and proper error handling for invalid expressions.
+
+![Output](./calculator.gif)
